@@ -1,0 +1,16 @@
+[
+{
+  "modid": "theonepower",
+  "name": "The One Power",
+  "description": "Combine flows of the One Power to cultivate your land, mine your ores, build your house, defeat your enemies, and do stuff you'd never imagine!",
+  "version": "Pre-alpha",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": [ "Pulsior", "creep_the_creepy", "Mafkees__10"],
+  "credits": "My friends and the people on #minecraftforge",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
