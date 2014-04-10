@@ -17,12 +17,10 @@ public class KeyBindings {
 	List<CustomBinding> bindings = new ArrayList<CustomBinding>();
 
 	public KeyBindings(){
-		CustomBinding KeyF = new KeyF();
-		CustomBinding KeyV = new KeyV();
-		ClientRegistry.registerKeyBinding( KeyF );
-		ClientRegistry.registerKeyBinding( KeyV );
-		bindings.add(KeyF);
-		bindings.add(KeyV);
+		ClientRegistry.registerKeyBinding( CustomBinding.BINDING_F );
+		ClientRegistry.registerKeyBinding( CustomBinding.BINDING_V );
+		bindings.add(CustomBinding.BINDING_F);
+		bindings.add(CustomBinding.BINDING_V);
 	}
 
 	@SubscribeEvent

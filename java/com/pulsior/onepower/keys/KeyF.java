@@ -2,7 +2,7 @@ package com.pulsior.onepower.keys;
 
 import org.lwjgl.input.Keyboard;
 
-import com.pulsior.onepower.channeling.OverlayHandler;
+import com.pulsior.onepower.TheOnePower;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,7 +16,9 @@ public class KeyF extends CustomBinding{
 
 	@Override
 	public void execute() {
-		OverlayHandler.instance().toggleButtons();
+		if(TheOnePower.getChannel() != null){
+			
+		}
 	}
 
 }

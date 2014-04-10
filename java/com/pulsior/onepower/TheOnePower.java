@@ -2,11 +2,10 @@ package com.pulsior.onepower;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 
-import com.pulsior.onepower.channeling.OverlayHandler;
+import com.pulsior.onepower.channeling.Channel;
+import com.pulsior.onepower.client.OverlayHandler;
 import com.pulsior.onepower.item.Callandor;
 import com.pulsior.onepower.item.VoraSaAngreal;
 import com.pulsior.onepower.keys.KeyBindings;
@@ -33,6 +32,7 @@ public class TheOnePower
     public static final String VERSION = "0.01";
     public static final String HUMAN_NAME = "The One Power";
     
+    private static Channel activeChannel;
     public static Item callandor;
     
     public static CreativeTabs tab;
@@ -67,8 +67,17 @@ public class TheOnePower
 		GameRegistry.registerItem(vora, "itemVoraSaAngreal");
     }
     
-    @EventHandler
-    public void onClick(PlayerSleepInBedEvent event){
-    	event.entityPlayer.setGameType(GameType.CREATIVE);
+    public static void newChannel(){
+    	activeChannel = new Channel();
     }
+    
+    public static Channel getChannel(){
+    	return activeChannel;
+    }
+    
+    public static void removeChannel(){
+    	activeChannel = null;
+    }
+    
+    
 }

@@ -1,9 +1,10 @@
-package com.pulsior.onepower.channeling;
+package com.pulsior.onepower.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -11,6 +12,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import org.lwjgl.opengl.GL11;
 
 import com.pulsior.onepower.TheOnePower;
+import com.pulsior.onepower.keys.CustomBinding;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -21,10 +23,11 @@ public class OverlayHandler extends Gui{
 
 	public static boolean renderElements = false;
 	public static boolean renderGlow = false;
-
-
+	KeyBinding f = CustomBinding.BINDING_F;
+	
 	private ResourceLocation iconsRl = new ResourceLocation(TheOnePower.MODID, "textures/gui/atlas-icons.png");
 	private ResourceLocation glowRl =  new ResourceLocation(TheOnePower.MODID, "textures/gui/glow.png");
+	public float full = 0F;
 	private static OverlayHandler instance;
 
 	Minecraft mc = Minecraft.getMinecraft();
@@ -55,18 +58,22 @@ public class OverlayHandler extends Gui{
 			if(renderGlow){
 				renderSaidarGlow();
 				renderLevelBar();
+				
+				if( f.getIsKeyPressed() && full < TheOnePower.getChannel().getMaxPower() ){
+					TheOnePower.getChannel().drawPower();
+				}
+				
 			}
 
 		}    
 	}
-
-	public void toggleGlow(){
+	
+	public void toggleOverlay(){
 		renderGlow = ! renderGlow;
-		if( ! renderGlow) renderElements = false;
-	}
-
-	public void toggleButtons(){
-		if(renderGlow) renderElements = ! renderElements;				
+		renderElements = ! renderElements;
+		if( ! renderElements){
+			full = 0F;
+		}
 	}
 
 	public boolean isSaidarEmbraced(){
@@ -128,12 +135,34 @@ public class OverlayHandler extends Gui{
 	 * Render the saidar level indicating bar
 	 */
 	
-	private void renderLevelBar(){		
+	private void renderLevelBar(){
+		final int BAR_LENGTH = 173;
+		final int BAR_WIDTH = 9;
+		final int CONTENT_LENGTH = (int)(full * BAR_LENGTH);
+		
 		ScaledResolution r = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
 		mc.renderEngine.bindTexture( iconsRl );
 		int x = r.getScaledWidth() - 18;
 		int y = r.getScaledHeight() / 2 - 85;
-		this.drawTexturedModalRect(x, y, 247, 0, 9, 173);
+		
+		int cx = x - 1;
+		int cy = y + 171 - CONTENT_LENGTH;
+		
+		if(cy < y){
+			cy = y;
+		}
+		
+		this.drawTexturedModalRect(cx, cy, 256-2*BAR_WIDTH, 0, BAR_WIDTH, CONTENT_LENGTH);
+		this.drawTexturedModalRect(x, y, 256-BAR_WIDTH, 0, BAR_WIDTH, BAR_LENGTH);
+		
+	}
+	
+	/**
+	 * Update the level bar
+	 */
+	
+	public void updateLevelBar(float full){
+		this.full = full;
 	}
 
 }
