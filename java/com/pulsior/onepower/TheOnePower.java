@@ -4,12 +4,16 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.pulsior.onepower.block.PortalStoneBlock;
+import com.pulsior.onepower.block.PortalStoneBlockTileEntity;
+import com.pulsior.onepower.block.renderer.PortalStoneBlockRenderer;
 import com.pulsior.onepower.channeling.Channel;
 import com.pulsior.onepower.client.OverlayHandler;
 import com.pulsior.onepower.item.Callandor;
 import com.pulsior.onepower.item.VoraSaAngreal;
 import com.pulsior.onepower.keys.KeyBindings;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -42,13 +46,14 @@ public class TheOnePower
     {	
     	instance = this;
     	tab = new CreativeTab();
-    	registerItems(); 
+    	registerItems();
+    	GameRegistry.registerBlock(new PortalStoneBlock(), "blockPortalStone");
      }
     
     @EventHandler
     public void init(FMLInitializationEvent event){
-    	Crafting.init();
-    	
+    	Crafting.init();    	    	
+    	GameRegistry.registerTileEntity(PortalStoneBlockTileEntity.class, "tileEntityPortalStone");
     }
     
     /** Register event listener **/
@@ -56,7 +61,12 @@ public class TheOnePower
     @EventHandler
     public void clientInit(FMLInitializationEvent event){
     	MinecraftForge.EVENT_BUS.register( OverlayHandler.instance() );
-    	FMLCommonHandler.instance().bus().register(new KeyBindings() );
+    	KeyBindings b = new KeyBindings();
+    	MinecraftForge.EVENT_BUS.register(b);
+    	FMLCommonHandler.instance().bus().register(b);
+    	
+    	ClientRegistry.bindTileEntitySpecialRenderer(PortalStoneBlockTileEntity.class, new PortalStoneBlockRenderer() );
+    	
     }
     
     public void registerItems(){
@@ -68,7 +78,8 @@ public class TheOnePower
     }
     
     public static void newChannel(){
-    	activeChannel = new Channel();
+    	//activeChannel = new Channel();
+    	
     }
     
     public static Channel getChannel(){

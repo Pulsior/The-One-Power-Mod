@@ -17,7 +17,7 @@ public class KeyF extends CustomBinding{
 	@Override
 	public void execute() {
 		if(TheOnePower.getChannel() != null){
-			
+			TheOnePower.getChannel().add();
 		}
 	}
 

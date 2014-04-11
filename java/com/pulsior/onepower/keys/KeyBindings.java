@@ -3,7 +3,10 @@ package com.pulsior.onepower.keys;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pulsior.onepower.TheOnePower;
+
 import net.minecraft.client.gui.GuiChat;
+import net.minecraftforge.client.event.MouseEvent;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -19,7 +22,9 @@ public class KeyBindings {
 	public KeyBindings(){
 		ClientRegistry.registerKeyBinding( CustomBinding.BINDING_F );
 		ClientRegistry.registerKeyBinding( CustomBinding.BINDING_V );
+		ClientRegistry.registerKeyBinding( CustomBinding.BINDING_R );
 		bindings.add(CustomBinding.BINDING_F);
+		bindings.add(CustomBinding.BINDING_R);
 		bindings.add(CustomBinding.BINDING_V);
 	}
 
@@ -27,7 +32,7 @@ public class KeyBindings {
 	public void onKeyInput(KeyInputEvent event) {
 
 		if (!FMLClientHandler.instance().isGUIOpen(GuiChat.class)) {
-			
+
 			for(CustomBinding bind : bindings){
 				if( bind.getIsKeyPressed() ){
 					bind.execute();
@@ -35,6 +40,22 @@ public class KeyBindings {
 			}
 
 		}
+	}
+
+	@SubscribeEvent
+	public void onMouseInput(MouseEvent event){
+		int dwheel = event.dwheel;
+		if(TheOnePower.getChannel() != null){
+			if(dwheel > 0){
+				TheOnePower.getChannel().scroll(-1);
+				event.setCanceled(true);
+			}
+			else if(dwheel < 0){
+				TheOnePower.getChannel().scroll(1);
+				event.setCanceled(true);
+			}
+		}
+		
 	}
 
 }
