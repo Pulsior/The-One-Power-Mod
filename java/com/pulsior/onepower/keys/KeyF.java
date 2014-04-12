@@ -3,6 +3,7 @@ package com.pulsior.onepower.keys;
 import org.lwjgl.input.Keyboard;
 
 import com.pulsior.onepower.TheOnePower;
+import com.pulsior.onepower.packet.channeling.PacketPlayerCastWeave;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,9 +17,7 @@ public class KeyF extends CustomBinding{
 
 	@Override
 	public void execute() {
-		if(TheOnePower.getChannel() != null){
-			TheOnePower.getChannel().add();
-		}
+		TheOnePower.PACKET_PIPELINE.sendToServer( new PacketPlayerCastWeave() );
 	}
 
 }

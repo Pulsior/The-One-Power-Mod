@@ -9,6 +9,6 @@ public class KeyR extends CustomBinding{
 	}
 
 	@Override
-	public void execute() {
-	}
+	public void execute() {}
+	
 }

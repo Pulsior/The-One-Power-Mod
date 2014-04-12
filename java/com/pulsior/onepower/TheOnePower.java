@@ -1,6 +1,9 @@
 package com.pulsior.onepower;
 
+import java.util.HashMap;
+
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -8,16 +11,20 @@ import com.pulsior.onepower.block.PortalStoneBlock;
 import com.pulsior.onepower.block.PortalStoneBlockTileEntity;
 import com.pulsior.onepower.block.renderer.PortalStoneBlockRenderer;
 import com.pulsior.onepower.channeling.Channel;
-import com.pulsior.onepower.client.OverlayHandler;
+import com.pulsior.onepower.client.ChannelGUI;
 import com.pulsior.onepower.item.Callandor;
 import com.pulsior.onepower.item.VoraSaAngreal;
 import com.pulsior.onepower.keys.KeyBindings;
+import com.pulsior.onepower.packet.PacketPipeline;
+import com.pulsior.onepower.proxy.CommonProxy;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -32,18 +39,28 @@ public class TheOnePower
 	@Mod.Instance
     public static TheOnePower instance;
 	
+	public static final PacketPipeline PACKET_PIPELINE = new PacketPipeline();
     public static final String MODID = "theonepower";
     public static final String VERSION = "0.01";
     public static final String HUMAN_NAME = "The One Power";
+    @SidedProxy(clientSide = "com.pulsior.onepower.proxy.ClientProxy", serverSide = "com.pulsior.onepower.proxy.ServerProxy")
+    public static CommonProxy proxy;
     
-    private static Channel activeChannel;
     public static Item callandor;
     
     public static CreativeTabs tab;
- 
+    private final HashMap<EntityPlayer, Channel> channelMap = new HashMap<EntityPlayer, Channel>();
+    //private static Minecraft mc = Minecraft.getMinecraft();
+  
+    
+    public TheOnePower(){
+    	
+    }
+    
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {	
+    	PACKET_PIPELINE.initialize();
     	instance = this;
     	tab = new CreativeTab();
     	registerItems();
@@ -56,17 +73,9 @@ public class TheOnePower
     	GameRegistry.registerTileEntity(PortalStoneBlockTileEntity.class, "tileEntityPortalStone");
     }
     
-    /** Register event listener **/
-    @SideOnly(Side.CLIENT)
     @EventHandler
-    public void clientInit(FMLInitializationEvent event){
-    	MinecraftForge.EVENT_BUS.register( OverlayHandler.instance() );
-    	KeyBindings b = new KeyBindings();
-    	MinecraftForge.EVENT_BUS.register(b);
-    	FMLCommonHandler.instance().bus().register(b);
-    	
-    	ClientRegistry.bindTileEntitySpecialRenderer(PortalStoneBlockTileEntity.class, new PortalStoneBlockRenderer() );
-    	
+    public void postInit(FMLPostInitializationEvent event){
+    	PACKET_PIPELINE.postInitialize();
     }
     
     public void registerItems(){
@@ -77,18 +86,35 @@ public class TheOnePower
 		GameRegistry.registerItem(vora, "itemVoraSaAngreal");
     }
     
-    public static void newChannel(){
-    	//activeChannel = new Channel();
+    /*
+     * Client side stuff
+     */
+    
+    /** Register event listener **/
+    @SideOnly(Side.CLIENT)
+    @EventHandler
+    public void clientInit(FMLInitializationEvent event){
+    	MinecraftForge.EVENT_BUS.register( ChannelGUI.instance() );
+    	KeyBindings b = new KeyBindings();
+    	MinecraftForge.EVENT_BUS.register(b);
+    	FMLCommonHandler.instance().bus().register(b);
+    	
+    	ClientRegistry.bindTileEntitySpecialRenderer(PortalStoneBlockTileEntity.class, new PortalStoneBlockRenderer() );
     	
     }
     
-    public static Channel getChannel(){
-    	return activeChannel;
+    
+    
+    public void addChannel(EntityPlayer player){
+    	channelMap.put(player, new Channel(player) );
     }
     
-    public static void removeChannel(){
-    	activeChannel = null;
+    
+    public Channel getChannel(EntityPlayer player){
+    	return channelMap.get(player);
     }
+    
+ 
     
     
 }

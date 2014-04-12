@@ -43,12 +43,6 @@ public class Callandor extends ItemSword{
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
 
-		if(TheOnePower.getChannel() == null){
-			TheOnePower.newChannel();
-		}
-		else{
-			TheOnePower.getChannel().close();
-		}
 
 		return par1ItemStack;
 	}

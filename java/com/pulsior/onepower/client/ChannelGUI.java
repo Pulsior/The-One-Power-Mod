@@ -13,35 +13,42 @@ import org.lwjgl.opengl.GL11;
 
 import com.pulsior.onepower.TheOnePower;
 import com.pulsior.onepower.keys.CustomBinding;
+import com.pulsior.onepower.packet.channeling.PacketPlayerDrawSaidar;
+import com.pulsior.onepower.packet.channeling.PacketPlayerEmbraceSaidar;
+import com.pulsior.onepower.weave.Element;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class OverlayHandler extends Gui{
+public class ChannelGUI extends Gui{
 
-	public static boolean renderElements = false;
-	public static boolean renderGlow = false;
 	KeyBinding r = CustomBinding.BINDING_R;
+
 
 	private int selectedElement = 2;
 	private ResourceLocation iconsRl = new ResourceLocation(TheOnePower.MODID, "textures/gui/atlas-icons.png");
 	private ResourceLocation glowRl =  new ResourceLocation(TheOnePower.MODID, "textures/gui/glow.png");
-	public float full = 0F;
+	private float drawnPower = 0F;
+	private float maxPower;
+	private float full = 0F;
 	public float transparencyLevel = 0F;
-	private static OverlayHandler instance;
+	private static ChannelGUI instance;
+	private static boolean isVisible = false;
 
 	Minecraft mc = Minecraft.getMinecraft();
 
-	private OverlayHandler(){
+	Element[] elements = new Element[]{Element.AIR, Element.FIRE, Element.WATER, Element.EARTH, Element.SPIRIT};
+
+	private ChannelGUI(){
 
 	}
 
-	public static OverlayHandler instance(){
+	public static ChannelGUI instance(){
 
 		if(instance == null){
-			instance = new OverlayHandler();
+			instance = new ChannelGUI();
 		}
 
 		return instance;
@@ -53,41 +60,43 @@ public class OverlayHandler extends Gui{
 
 		if(event.type == ElementType.CROSSHAIRS){
 
-			if(renderElements){
+			if(isVisible){
 				renderElements();
 				renderSelectorIcon();
-			}
-
-			if(renderGlow){
 				renderSaidarGlow();
 				renderLevelBar();
 
-				if( r.getIsKeyPressed() && full < TheOnePower.getChannel().getMaxPower() ){
-					TheOnePower.getChannel().drawPower();
-				}
+				if( r.getIsKeyPressed() ){
 
+					TheOnePower.PACKET_PIPELINE.sendToServer(new PacketPlayerDrawSaidar() );
+					this.incrementLevelBar();					
+				}
 			}
 
 		}    
 	}
 
-	public void toggleOverlay(){
-		renderGlow = ! renderGlow;
-		renderElements = ! renderElements;
-		if( ! renderElements){
-			full = 0F;
+	public void toggleVisible(){
+		isVisible = ! isVisible;
+
+		if(isVisible){
+			TheOnePower.PACKET_PIPELINE.sendToServer( new PacketPlayerEmbraceSaidar() );
+		}
+
+		if( ! isVisible){
+			drawnPower = 0F;
 			transparencyLevel = 0F;
 			selectedElement = 2;
 		}
 	}
 
-	public boolean isSaidarEmbraced(){
-		return renderGlow;
+	public boolean isEnabled(){
+		return isVisible;
 	}
 
-	public boolean isChanneling(){
-		return renderElements;
-	}
+	/**
+	 * Render the five elements on screen
+	 */
 
 	private void renderElements(){						
 		final int SIZE = 32;
@@ -114,7 +123,7 @@ public class OverlayHandler extends Gui{
 	}
 
 	/**
-	 * Render golden glow on screen
+	 * Render golden glow on screen.
 	 */
 
 	private void renderSaidarGlow()
@@ -146,12 +155,17 @@ public class OverlayHandler extends Gui{
 	}
 
 	/**
-	 * Render the saidar level indicating bar
+	 * Render the saidar level indicating bar.
 	 */
 
 	private void renderLevelBar(){
 		final int BAR_LENGTH = 173;
 		final int BAR_WIDTH = 9;
+
+
+		full = drawnPower / maxPower;
+
+
 		final int CONTENT_LENGTH = (int)(full * BAR_LENGTH);
 
 		ScaledResolution r = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
@@ -173,21 +187,34 @@ public class OverlayHandler extends Gui{
 		this.drawTexturedModalRect(cx, cy, 256-2*BAR_WIDTH, 0, BAR_WIDTH, CONTENT_LENGTH);
 		this.drawTexturedModalRect(x, y, 256-BAR_WIDTH, 0, BAR_WIDTH, BAR_LENGTH);
 
+		/*
+		FontRenderer renderer = mc.fontRenderer;
+		String text = Float.toString(drawnPower);
+		int color = 0xFFFFFF;
+		renderer.drawStringWithShadow(text, x-100, cy, color);
+		
+		*/
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 
 
 	/**
-	 * Update the level bar
+	 * Update the level bar.
 	 */
 
-	public void updateLevelBar(float full){
-		this.full = full;
+	public void incrementLevelBar(){
+		if(this.drawnPower + 0.005F <= maxPower){
+			this.drawnPower += 0.005F * (maxPower / 1.5F);
+		}
+	}
+
+	public void decrementLevelBar(){
+		this.full -= 0.005F * (maxPower / 1.5F);
 	}
 
 
 	/**
-	 * Render the selector icon
+	 * Render the selector icon.
 	 */
 
 	public void renderSelectorIcon(){
@@ -202,13 +229,55 @@ public class OverlayHandler extends Gui{
 		this.drawTexturedModalRect(x + selectedElement * 34, y, POSITION_TO_ICON, 0, SELECTOR_SIZE, SELECTOR_SIZE);
 
 	}
-	
+
 	/**
-	 * Set selected element
+	 * Get the element selected by the selector icon.
+	 * @return selectedElement
 	 */
-	
+
+	public Element getSelectedElement(){
+		return elements[selectedElement];
+	}
+
+	/**
+	 * Set the element selected by the selector icon.
+	 */
+
 	public void setSelected(int index){
 		this.selectedElement = index;
+	}
+
+	/**
+	 * Set the maximum amount of saidar the player can draw.
+	 * @param maxPower
+	 */
+
+	public void setMaxPower(float maxPower){
+		this.maxPower = maxPower;
+	}
+	
+	/**
+	 * Set the amount of saidar the player is handling
+	 */
+	
+	public void setDrawnPower(float drawnPower){
+		this.drawnPower = drawnPower;
+	}
+
+	/** 
+	 * @param scrollDirection
+	 */
+	public void scroll(int scrollDirection){
+		selectedElement = selectedElement + scrollDirection;
+
+		if(selectedElement == 5){
+			selectedElement = 0;
+		}
+		if(selectedElement == -1){
+			selectedElement = 4;
+		}
+
+		this.setSelected(selectedElement);
 	}
 
 }

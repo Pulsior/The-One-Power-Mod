@@ -15,14 +15,8 @@ public class KeyV extends CustomBinding{
 	}
 
 	@Override
-	public void execute() {
-		
-		if(TheOnePower.getChannel() == null){
-			TheOnePower.newChannel();
-		}
-		else{
-			TheOnePower.getChannel().close();
-		}
+	public void execute() {		
+		TheOnePower.proxy.toggleChannelingGui();
 	}
 
 }
