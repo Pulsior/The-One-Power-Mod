@@ -50,7 +50,7 @@ public class FireballWeave implements IWeave {
 			fireball2.accelerationY = look.yCoord * 0.1;
 			fireball2.accelerationZ = look.zCoord * 0.1;
 			world.spawnEntityInWorld(fireball2);
-
+			return true;
 		}
 
 		return false;

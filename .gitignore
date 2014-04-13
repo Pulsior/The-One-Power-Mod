@@ -5,8 +5,13 @@
 *.pydevproject
 .project
 .metadata
+.gradle/
+.settings/
+build/
+eclipse/
 bin/
 tmp/
+gradle/
 *.tmp
 *.bak
 *.swp
