@@ -18,9 +18,9 @@ public class Channel {
 	private float drawnPower;
 	private List<Element> elements = new ArrayList<Element>();
 	
-	public Channel(EntityPlayer player){
+	public Channel(EntityPlayer player, float extraPower){
 		this.player = player;
-		this.maxPower = 10F;
+		this.maxPower = 10F + extraPower;
 		this.drawnPower = 0F;
 		updateClient();
 	}

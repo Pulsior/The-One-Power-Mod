@@ -6,7 +6,7 @@ public class ClientProxy extends CommonProxy{
 
 	@Override
 	public void toggleChannelingGui() {
-		ChannelGUI.instance().toggleVisible();
+		ChannelGUI.instance().toggleVisible(true);
 	}
 
 	@Override

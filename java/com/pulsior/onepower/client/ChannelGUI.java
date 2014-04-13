@@ -1,6 +1,7 @@
 package com.pulsior.onepower.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
@@ -76,10 +77,10 @@ public class ChannelGUI extends Gui{
 		}    
 	}
 
-	public void toggleVisible(){
+	public void toggleVisible(boolean sendPacket){
 		isVisible = ! isVisible;
 
-		if(isVisible){
+		if(isVisible && sendPacket){
 			TheOnePower.PACKET_PIPELINE.sendToServer( new PacketPlayerEmbraceSaidar() );
 		}
 
@@ -187,13 +188,14 @@ public class ChannelGUI extends Gui{
 		this.drawTexturedModalRect(cx, cy, 256-2*BAR_WIDTH, 0, BAR_WIDTH, CONTENT_LENGTH);
 		this.drawTexturedModalRect(x, y, 256-BAR_WIDTH, 0, BAR_WIDTH, BAR_LENGTH);
 
-		/*
-		FontRenderer renderer = mc.fontRenderer;
-		String text = Float.toString(drawnPower);
-		int color = 0xFFFFFF;
-		renderer.drawStringWithShadow(text, x-100, cy, color);
 		
-		*/
+		FontRenderer renderer = mc.fontRenderer;
+		float renderedDrawnPower = ( (float) Math.round(2*drawnPower) ) / 2;
+		String text = Float.toString(renderedDrawnPower);
+		int color = 0xFFFF55;
+		renderer.drawStringWithShadow(text, x-20, cy-5, color);
+		
+		
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 

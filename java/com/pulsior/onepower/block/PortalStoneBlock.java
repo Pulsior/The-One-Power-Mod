@@ -13,7 +13,9 @@ public class PortalStoneBlock extends BlockContainer{
 	public PortalStoneBlock() {
 		super(Material.portal);
 		this.setCreativeTab(TheOnePower.tab);
-		this.setBlockBounds(0.4F, 0.0F, 0.4F, 1.5F, 2.0F, 1.5F);
+		this.setBlockBounds(0.1F, 0.0F, 0.1F, 0.8F, 2.0F, 0.8F);
+		this.setBlockName("blockPortalStone");
+		this.setLightOpacity(20);
 	}
 
 	@Override
@@ -34,7 +36,7 @@ public class PortalStoneBlock extends BlockContainer{
 	
 	@Override
 	public void registerBlockIcons(IIconRegister register){
-		this.blockIcon = register.registerIcon("theonepower:portalstoneItem");
+		this.blockIcon = register.registerIcon("theonepower:portalstoneitem");
 	}
 	
 

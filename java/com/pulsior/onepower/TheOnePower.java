@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -16,6 +17,7 @@ import com.pulsior.onepower.item.Callandor;
 import com.pulsior.onepower.item.VoraSaAngreal;
 import com.pulsior.onepower.keys.KeyBindings;
 import com.pulsior.onepower.packet.PacketPipeline;
+import com.pulsior.onepower.packet.channeling.PacketPlayerEmbraceSaidar;
 import com.pulsior.onepower.proxy.CommonProxy;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -105,8 +107,10 @@ public class TheOnePower
     
     
     
-    public void addChannel(EntityPlayer player){
-    	channelMap.put(player, new Channel(player) );
+    public void addChannel(EntityPlayer player, float extraLevels){
+    	channelMap.put(player, new Channel(player, extraLevels) );
+    	EntityPlayerMP mp = (EntityPlayerMP) player;
+    	PACKET_PIPELINE.sendTo( new PacketPlayerEmbraceSaidar(extraLevels), mp);
     }
     
     

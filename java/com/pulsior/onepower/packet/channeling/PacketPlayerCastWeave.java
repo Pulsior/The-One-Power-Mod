@@ -22,7 +22,9 @@ public class PacketPlayerCastWeave extends AbstractPacket {
 	@Override
 	public void handleServerSide(EntityPlayer player) {
 		Channel channel = TheOnePower.instance.getChannel(player);
-		channel.cast();
+		if(channel != null){
+			channel.cast();
+		}
 
 	}
 
