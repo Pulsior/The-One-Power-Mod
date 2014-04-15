@@ -31,7 +31,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
- 
+
 @Mod(modid = TheOnePower.MODID, name = TheOnePower.HUMAN_NAME, version = TheOnePower.VERSION)
 
 
@@ -39,86 +39,90 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TheOnePower
 {
 	@Mod.Instance
-    public static TheOnePower instance;
-	
+	public static TheOnePower instance;
+
 	public static final PacketPipeline PACKET_PIPELINE = new PacketPipeline();
-    public static final String MODID = "theonepower";
-    public static final String VERSION = "0.01";
-    public static final String HUMAN_NAME = "The One Power";
-    @SidedProxy(clientSide = "com.pulsior.onepower.proxy.ClientProxy", serverSide = "com.pulsior.onepower.proxy.ServerProxy")
-    public static CommonProxy proxy;
-    
-    public static Item callandor;
-    
-    public static CreativeTabs tab;
-    private final HashMap<EntityPlayer, Channel> channelMap = new HashMap<EntityPlayer, Channel>();
-    //private static Minecraft mc = Minecraft.getMinecraft();
-  
-    
-    public TheOnePower(){
-    	
-    }
-    
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {	
-    	PACKET_PIPELINE.initialize();
-    	instance = this;
-    	tab = new CreativeTab();
-    	registerItems();
-    	GameRegistry.registerBlock(new PortalStoneBlock(), "blockPortalStone");
-     }
-    
-    @EventHandler
-    public void init(FMLInitializationEvent event){
-    	Crafting.init();    	    	
-    	GameRegistry.registerTileEntity(PortalStoneBlockTileEntity.class, "tileEntityPortalStone");
-    }
-    
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent event){
-    	PACKET_PIPELINE.postInitialize();
-    }
-    
-    public void registerItems(){
-    	callandor = new Callandor();
-    	GameRegistry.registerItem(callandor, "itemCallandor");
-		
+	public static final String MODID = "theonepower";
+	public static final String VERSION = "0.01";
+	public static final String HUMAN_NAME = "The One Power";
+	@SidedProxy(clientSide = "com.pulsior.onepower.proxy.ClientProxy", serverSide = "com.pulsior.onepower.proxy.ServerProxy")
+	public static CommonProxy proxy;
+
+	public static Item callandor;
+
+	public static CreativeTabs tab;
+	private final HashMap<EntityPlayer, Channel> channelMap = new HashMap<EntityPlayer, Channel>();
+	//private static Minecraft mc = Minecraft.getMinecraft();
+
+
+	public TheOnePower(){
+
+	}
+
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event)
+	{	
+		PACKET_PIPELINE.initialize();
+		instance = this;
+		tab = new CreativeTab();
+		registerItems();
+		GameRegistry.registerBlock(new PortalStoneBlock(), "blockPortalStone");
+	}
+
+	@EventHandler
+	public void init(FMLInitializationEvent event){
+		Crafting.init();    	    	
+		GameRegistry.registerTileEntity(PortalStoneBlockTileEntity.class, "tileEntityPortalStone");
+	}
+
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent event){
+		PACKET_PIPELINE.postInitialize();
+	}
+
+	public void registerItems(){
+		callandor = new Callandor();
+		GameRegistry.registerItem(callandor, "itemCallandor");
+
 		Item vora = new VoraSaAngreal();
 		GameRegistry.registerItem(vora, "itemVoraSaAngreal");
-    }
-    
-    /*
-     * Client side stuff
-     */
-    
-    /** Register event listener **/
-    @SideOnly(Side.CLIENT)
-    @EventHandler
-    public void clientInit(FMLInitializationEvent event){
-    	MinecraftForge.EVENT_BUS.register( ChannelGUI.instance() );
-    	KeyBindings b = new KeyBindings();
-    	MinecraftForge.EVENT_BUS.register(b);
-    	FMLCommonHandler.instance().bus().register(b);
-    	
-    	ClientRegistry.bindTileEntitySpecialRenderer(PortalStoneBlockTileEntity.class, new PortalStoneBlockRenderer() );
-    	
-    }
-    
-    
-    
-    public void addChannel(EntityPlayer player, float extraLevels){
-    	channelMap.put(player, new Channel(player, extraLevels) );
-    	EntityPlayerMP mp = (EntityPlayerMP) player;
-    	PACKET_PIPELINE.sendTo( new PacketPlayerEmbraceSaidar(extraLevels), mp);
-    }
-    
-    
-    public Channel getChannel(EntityPlayer player){
-    	return channelMap.get(player);
-    }
-    
- 
-    
-    
+	}
+
+	/*
+	 * Client side stuff
+	 */
+
+	/** Register event listener **/
+	@SideOnly(Side.CLIENT)
+	@EventHandler
+	public void clientInit(FMLInitializationEvent event){
+		MinecraftForge.EVENT_BUS.register( ChannelGUI.instance() );
+		KeyBindings b = new KeyBindings();
+		MinecraftForge.EVENT_BUS.register(b);
+		FMLCommonHandler.instance().bus().register(b);
+
+		ClientRegistry.bindTileEntitySpecialRenderer(PortalStoneBlockTileEntity.class, new PortalStoneBlockRenderer() );
+
+	}
+
+
+
+	public void addChannel(EntityPlayer player, float extraLevels, boolean sendPacket){
+		channelMap.put(player, new Channel(player, extraLevels) );
+		EntityPlayerMP mp = (EntityPlayerMP) player;
+
+		if(sendPacket)
+		{
+			PACKET_PIPELINE.sendTo( new PacketPlayerEmbraceSaidar(extraLevels), mp);
+		}
+	}
+
+
+	public Channel getChannel(EntityPlayer player){
+		return channelMap.get(player);
+	}
+
+
+
+
 }

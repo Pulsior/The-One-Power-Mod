@@ -7,6 +7,7 @@ public class ClientProxy extends CommonProxy{
 	@Override
 	public void toggleChannelingGui() {
 		ChannelGUI.instance().toggleVisible(true);
+		System.out.println("Toggled in proxy");
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class Callandor extends ItemSword{
 		
 		if(! par2World.isRemote )
 		{
-			TheOnePower.instance.addChannel(par3EntityPlayer, 150);
+			TheOnePower.instance.addChannel(par3EntityPlayer, 150, true);
 		}
 		
 		return par1ItemStack;
@@ -58,7 +58,7 @@ public class Callandor extends ItemSword{
 		
 		if(! par3World.isRemote )
 		{
-			TheOnePower.instance.addChannel(par2EntityPlayer, 150);
+			TheOnePower.instance.addChannel(par2EntityPlayer, 150, true);
 		}
 		
 		return true;

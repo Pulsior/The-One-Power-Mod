@@ -15,7 +15,7 @@ public class PortalStoneBlock extends BlockContainer{
 		this.setCreativeTab(TheOnePower.tab);
 		this.setBlockBounds(0.1F, 0.0F, 0.1F, 0.8F, 2.0F, 0.8F);
 		this.setBlockName("blockPortalStone");
-		this.setLightOpacity(20);
+		this.setLightLevel( this.getLightValue() );
 	}
 
 	@Override
@@ -26,6 +26,11 @@ public class PortalStoneBlock extends BlockContainer{
 	@Override
 	public int getRenderType(){
 		return -1;
+	}
+
+	@Override
+	public boolean isOpaqueCube() {
+		return false;
 	}
 
 	@Override

@@ -31,11 +31,12 @@ public class PacketPlayerEmbraceSaidar extends AbstractPacket{
 	@Override
 	public void handleClientSide(EntityPlayer player) {
 		ChannelGUI.instance().toggleVisible(false);
+		System.out.println("Toggled client side");
 	}
 
 	@Override
 	public void handleServerSide(EntityPlayer player) {
-		TheOnePower.instance.addChannel(player, extraLevels);
+		TheOnePower.instance.addChannel(player, extraLevels, false);
 		System.out.println("Saidar was embraced by "+player.getGameProfile().getName());
 		
 	}

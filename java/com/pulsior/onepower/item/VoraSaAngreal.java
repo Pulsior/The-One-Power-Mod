@@ -27,7 +27,7 @@ public class VoraSaAngreal extends Item{
 		
 		if(! par2World.isRemote )
 		{
-			TheOnePower.instance.addChannel(par3EntityPlayer, 100);
+			TheOnePower.instance.addChannel(par3EntityPlayer, 100, true);
 		}
 		
 		return par1ItemStack;
@@ -40,7 +40,7 @@ public class VoraSaAngreal extends Item{
 		
 		if(! par3World.isRemote )
 		{
-			TheOnePower.instance.addChannel(par2EntityPlayer, 150);
+			TheOnePower.instance.addChannel(par2EntityPlayer, 100, true);
 		}
 		
 		return true;

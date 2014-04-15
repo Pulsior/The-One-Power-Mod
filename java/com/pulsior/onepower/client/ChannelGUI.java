@@ -78,6 +78,9 @@ public class ChannelGUI extends Gui{
 	}
 
 	public void toggleVisible(boolean sendPacket){
+		
+		System.out.println("Toggled in gui");
+		
 		isVisible = ! isVisible;
 
 		if(isVisible && sendPacket){
