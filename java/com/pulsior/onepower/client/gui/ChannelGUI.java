@@ -5,7 +5,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -13,8 +12,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import org.lwjgl.opengl.GL11;
 
 import com.pulsior.onepower.TheOnePower;
-import com.pulsior.onepower.keys.CustomBinding;
-import com.pulsior.onepower.packet.channeling.PacketPlayerDrawSaidar;
 import com.pulsior.onepower.packet.channeling.PacketPlayerEmbraceSaidar;
 import com.pulsior.onepower.weave.Element;
 
@@ -25,13 +22,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ChannelGUI extends Gui{
 
-	KeyBinding r = CustomBinding.BINDING_R;
-
-
 	private int selectedElement = 2;
 	private ResourceLocation iconsRl = new ResourceLocation(TheOnePower.MODID, "textures/gui/atlas-icons.png");
 	private ResourceLocation glowRl =  new ResourceLocation(TheOnePower.MODID, "textures/gui/glow.png");
-	private float drawnPower = 0F;
+	private float activePower;
 	private float maxPower;
 	private float full = 1.0F;
 	public float transparencyLevel = 0F;
@@ -66,14 +60,11 @@ public class ChannelGUI extends Gui{
 				renderSelectorIcon();
 				renderSaidarGlow();
 				renderLevelBar();
-
-				if( r.getIsKeyPressed() ){
-
-					TheOnePower.PACKET_PIPELINE.sendToServer(new PacketPlayerDrawSaidar() );
-					this.incrementLevelBar();					
-				}
 			}
-
+			
+			else{
+				renderLevelIndicator();
+			}
 		}    
 	}
 
@@ -86,7 +77,6 @@ public class ChannelGUI extends Gui{
 		}
 
 		if( ! isVisible){
-			drawnPower = 0F;
 			transparencyLevel = 0F;
 			selectedElement = 2;
 		}
@@ -163,11 +153,6 @@ public class ChannelGUI extends Gui{
 	private void renderLevelBar(){
 		final int BAR_LENGTH = 173;
 		final int BAR_WIDTH = 9;
-
-
-		full = drawnPower / maxPower;
-
-
 		final int CONTENT_LENGTH = (int)(full * BAR_LENGTH);
 
 		ScaledResolution r = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
@@ -191,30 +176,13 @@ public class ChannelGUI extends Gui{
 
 		
 		FontRenderer renderer = mc.fontRenderer;
-		float renderedDrawnPower = ( (float) Math.round(2*drawnPower) ) / 2;
+		float renderedDrawnPower = ( (float) Math.round(10*activePower) ) / 10;
 		String text = Float.toString(renderedDrawnPower);
 		int color = 0xFFFF55;
 		renderer.drawStringWithShadow(text, x-20, cy-5, color);
 		
 		
 		GL11.glDisable(GL11.GL_BLEND);
-	}
-
-	
-	
-	
-	/**
-	 * Update the level bar.
-	 */
-
-	public void incrementLevelBar(){
-		if(this.drawnPower + 0.005F <= maxPower){
-			this.drawnPower += 0.005F * (maxPower / 1.5F);
-		}
-	}
-
-	public void decrementLevelBar(){
-		this.full -= 0.005F * (maxPower / 1.5F);
 	}
 
 
@@ -233,6 +201,23 @@ public class ChannelGUI extends Gui{
 
 		this.drawTexturedModalRect(x + selectedElement * 34, y, POSITION_TO_ICON, 0, SELECTOR_SIZE, SELECTOR_SIZE);
 
+	}
+	
+	/**
+	 * Render the level indicator shown when saidar is
+	 * not embraced.
+	 */
+	
+	public void renderLevelIndicator(){
+		ScaledResolution r = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+		final int x = r.getScaledWidth() - 30;
+		final int y = (int) ( r.getScaledHeight() -10 );
+		
+		FontRenderer renderer = mc.fontRenderer;
+		float renderedDrawnPower = ( (float) Math.round(10*activePower) ) / 10;
+		String text = Float.toString(renderedDrawnPower);
+		int color = 0xFFFF55;
+		renderer.drawStringWithShadow(text, x, y, color);
 	}
 
 	/**
@@ -253,7 +238,7 @@ public class ChannelGUI extends Gui{
 	}
 
 	/**
-	 * Set the maximum amount of saidar the player can draw.
+	 * Set the maximum amount of saidar the player can have.
 	 * @param maxPower
 	 */
 
@@ -262,12 +247,16 @@ public class ChannelGUI extends Gui{
 	}
 	
 	/**
-	 * Set the amount of saidar the player is handling
+	 * Set the amount of saidar the player has available
+	 * @param activePower
 	 */
 	
-	public void setDrawnPower(float drawnPower){
-		this.drawnPower = drawnPower;
+	public void setActivePower(float activePower){
+		this.activePower = activePower;
+		this.full = activePower / maxPower;
 	}
+	
+
 
 	/** 
 	 * @param scrollDirection

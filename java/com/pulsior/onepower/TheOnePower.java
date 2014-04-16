@@ -53,6 +53,7 @@ public class TheOnePower
 
 	public static CreativeTabs tab;
 	private final HashMap<EntityPlayer, Channel> channelMap = new HashMap<EntityPlayer, Channel>();
+	//private final HashMap<EntityPlayer, Float> playerActiveLevelMap = new HashMap<EntityPlayer, Float>();
 	//private static Minecraft mc = Minecraft.getMinecraft();
 
 
@@ -123,6 +124,7 @@ public class TheOnePower
 	public Channel getChannel(EntityPlayer player){
 		return channelMap.get(player);
 	}
+	
 
 
 

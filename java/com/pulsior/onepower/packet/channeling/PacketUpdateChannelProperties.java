@@ -10,31 +10,31 @@ import com.pulsior.onepower.packet.AbstractPacket;
 public class PacketUpdateChannelProperties extends AbstractPacket{
 	
 	float maxPower;
-	float drawnPower;
+	float activePower;
 	
 	public PacketUpdateChannelProperties(){};
 	
-	public PacketUpdateChannelProperties(float maxPower, float drawnPower){
+	public PacketUpdateChannelProperties(float maxPower, float activePower){
 		this.maxPower = maxPower;
-		this.drawnPower = drawnPower;
+		this.activePower = activePower;
 	}
 	
 	@Override
 	public void encodeInto(ChannelHandlerContext context, ByteBuf buffer) {
 		buffer.writeFloat(maxPower);
-		buffer.writeFloat(drawnPower);
+		buffer.writeFloat(activePower);
 	}
 
 	@Override
 	public void decodeInto(ChannelHandlerContext context, ByteBuf buffer) {
 		maxPower = buffer.readFloat();
-		drawnPower = buffer.readFloat();
+		activePower = buffer.readFloat();
 	}
 
 	@Override
 	public void handleClientSide(EntityPlayer player) {
 		ChannelGUI.instance().setMaxPower(maxPower);
-		ChannelGUI.instance().setDrawnPower(drawnPower);
+		ChannelGUI.instance().setActivePower(activePower);
 	}
 
 	@Override

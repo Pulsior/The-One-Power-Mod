@@ -40,7 +40,7 @@ public class VoraSaAngreal extends Item{
 		
 		if(! par3World.isRemote )
 		{
-			TheOnePower.instance.addChannel(par2EntityPlayer, 100, true);
+			TheOnePower.instance.addChannel(par2EntityPlayer, 10, true);
 		}
 		
 		return true;
