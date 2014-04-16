@@ -1,4 +1,4 @@
-package com.pulsior.onepower.block;
+package com.pulsior.onepower.block.tileentity;
 
 import net.minecraft.tileentity.TileEntity;
 

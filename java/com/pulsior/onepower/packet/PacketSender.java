@@ -18,7 +18,6 @@ public class PacketSender extends FMLIndexedMessageToMessageCodec<IPacket>{
 	
 	
 	private PacketSender() {
-		//this.addDiscriminator(0, PacketEmbraceSaidar.class);
     }
 	
 
@@ -29,7 +28,6 @@ public class PacketSender extends FMLIndexedMessageToMessageCodec<IPacket>{
 
     @Override
     public void decodeInto(ChannelHandlerContext ctx, ByteBuf data, IPacket packet) {
-    	System.out.println("Packet");
         packet.readBytes(data);
     }
     

@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 
-import com.pulsior.onepower.client.ChannelGUI;
+import com.pulsior.onepower.client.gui.ChannelGUI;
 import com.pulsior.onepower.packet.AbstractPacket;
 
 public class PacketUpdateChannelProperties extends AbstractPacket{

@@ -1,4 +1,4 @@
-package com.pulsior.onepower.block.renderer;
+package com.pulsior.onepower.client.renderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import com.pulsior.onepower.block.model.PortalStoneModel;
+import com.pulsior.onepower.client.model.PortalStoneModel;
 
 public class PortalStoneBlockRenderer extends TileEntitySpecialRenderer {
 	private final PortalStoneModel model;

@@ -1,4 +1,4 @@
-package com.pulsior.onepower.client;
+package com.pulsior.onepower.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -33,7 +33,7 @@ public class ChannelGUI extends Gui{
 	private ResourceLocation glowRl =  new ResourceLocation(TheOnePower.MODID, "textures/gui/glow.png");
 	private float drawnPower = 0F;
 	private float maxPower;
-	private float full = 0F;
+	private float full = 1.0F;
 	public float transparencyLevel = 0F;
 	private static ChannelGUI instance;
 	private static boolean isVisible = false;
@@ -78,8 +78,6 @@ public class ChannelGUI extends Gui{
 	}
 
 	public void toggleVisible(boolean sendPacket){
-		
-		System.out.println("Toggled in gui");
 		
 		isVisible = ! isVisible;
 
@@ -202,7 +200,9 @@ public class ChannelGUI extends Gui{
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 
-
+	
+	
+	
 	/**
 	 * Update the level bar.
 	 */

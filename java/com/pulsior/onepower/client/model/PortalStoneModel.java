@@ -1,4 +1,4 @@
-package com.pulsior.onepower.block.model;
+package com.pulsior.onepower.client.model;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;

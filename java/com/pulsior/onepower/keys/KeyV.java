@@ -17,7 +17,6 @@ public class KeyV extends CustomBinding{
 	@Override
 	public void execute() {		
 		TheOnePower.proxy.toggleChannelingGui();
-		System.out.println("Toggled");
 	}
 
 }

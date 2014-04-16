@@ -15,7 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class Callandor extends ItemSword{
 
 	public Callandor(){
-		super(ToolMaterial.STONE);
+		super(ToolMaterial.EMERALD);
 		setUnlocalizedName("itemCallandor");
 		setCreativeTab(TheOnePower.tab);
 	}

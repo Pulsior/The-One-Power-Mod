@@ -1,7 +1,7 @@
 package com.pulsior.onepower.packet.channeling;
 
 import com.pulsior.onepower.TheOnePower;
-import com.pulsior.onepower.client.ChannelGUI;
+import com.pulsior.onepower.client.gui.ChannelGUI;
 import com.pulsior.onepower.packet.AbstractPacket;
 
 import io.netty.buffer.ByteBuf;
@@ -31,13 +31,11 @@ public class PacketPlayerEmbraceSaidar extends AbstractPacket{
 	@Override
 	public void handleClientSide(EntityPlayer player) {
 		ChannelGUI.instance().toggleVisible(false);
-		System.out.println("Toggled client side");
 	}
 
 	@Override
 	public void handleServerSide(EntityPlayer player) {
 		TheOnePower.instance.addChannel(player, extraLevels, false);
-		System.out.println("Saidar was embraced by "+player.getGameProfile().getName());
 		
 	}
 	 

@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 import com.pulsior.onepower.TheOnePower;
 import com.pulsior.onepower.channeling.Channel;
-import com.pulsior.onepower.client.ChannelGUI;
+import com.pulsior.onepower.client.gui.ChannelGUI;
 import com.pulsior.onepower.packet.AbstractPacket;
 
 public class PacketPlayerDrawSaidar extends AbstractPacket{

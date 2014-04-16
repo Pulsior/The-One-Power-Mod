@@ -9,10 +9,11 @@ import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.pulsior.onepower.block.PortalStoneBlock;
-import com.pulsior.onepower.block.PortalStoneBlockTileEntity;
-import com.pulsior.onepower.block.renderer.PortalStoneBlockRenderer;
+import com.pulsior.onepower.block.tileentity.PortalStoneBlockTileEntity;
 import com.pulsior.onepower.channeling.Channel;
-import com.pulsior.onepower.client.ChannelGUI;
+import com.pulsior.onepower.client.TickHandler;
+import com.pulsior.onepower.client.gui.ChannelGUI;
+import com.pulsior.onepower.client.renderer.PortalStoneBlockRenderer;
 import com.pulsior.onepower.item.Callandor;
 import com.pulsior.onepower.item.VoraSaAngreal;
 import com.pulsior.onepower.keys.KeyBindings;
@@ -73,6 +74,7 @@ public class TheOnePower
 	public void init(FMLInitializationEvent event){
 		Crafting.init();    	    	
 		GameRegistry.registerTileEntity(PortalStoneBlockTileEntity.class, "tileEntityPortalStone");
+		FMLCommonHandler.instance().bus().register(new TickHandler() );
 	}
 
 	@EventHandler

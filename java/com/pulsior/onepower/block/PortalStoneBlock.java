@@ -7,15 +7,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.pulsior.onepower.TheOnePower;
+import com.pulsior.onepower.block.tileentity.PortalStoneBlockTileEntity;
 
 public class PortalStoneBlock extends BlockContainer{
 
 	public PortalStoneBlock() {
-		super(Material.portal);
+		super(Material.rock);
 		this.setCreativeTab(TheOnePower.tab);
-		this.setBlockBounds(0.1F, 0.0F, 0.1F, 0.8F, 2.0F, 0.8F);
+		this.setBlockBounds(0.05F, 0.0F, 0.05F, 0.95F, 2.0F, 0.95F);
 		this.setBlockName("blockPortalStone");
 		this.setLightLevel( this.getLightValue() );
+		this.setHardness(12000);
 	}
 
 	@Override

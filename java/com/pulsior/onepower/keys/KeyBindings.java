@@ -7,7 +7,7 @@ import net.minecraft.client.gui.GuiChat;
 import net.minecraftforge.client.event.MouseEvent;
 
 import com.pulsior.onepower.TheOnePower;
-import com.pulsior.onepower.client.ChannelGUI;
+import com.pulsior.onepower.client.gui.ChannelGUI;
 import com.pulsior.onepower.packet.channeling.PacketPlayerAddElement;
 
 import cpw.mods.fml.client.FMLClientHandler;
