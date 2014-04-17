@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.pulsior.onepower.TheOnePower;
+import com.pulsior.onepower.data.PlayerData;
 import com.pulsior.onepower.packet.channeling.PacketUpdateChannelProperties;
 import com.pulsior.onepower.weave.Element;
 import com.pulsior.onepower.weave.IWeave;
@@ -17,23 +18,14 @@ public class Channel {
 	private EntityPlayer player;
 	private float maxPower;
 	private float activePower;
+	private PlayerData data;
 	private List<Element> elements = new ArrayList<Element>();
 
 	public Channel(EntityPlayer player, float amplification){
 		this.player = player;
-		NBTTagCompound compound = player.getEntityData();
-		this.maxPower = 10F * amplification;
-		boolean channeledBefore = compound.getBoolean("hasChanneledBefore");
-
-		if (channeledBefore){
-			this.activePower = compound.getFloat("playerActivePower");
-		}
-
-		else{
-			this.activePower = maxPower;
-		}
-
-		savePlayerData();
+		this.data = PlayerData.getCustomData(player);
+		this.maxPower = data.getMaxPower();
+		this.activePower = data.getActivePower();
 	}
 
 	public void cast(){
@@ -45,7 +37,6 @@ public class Channel {
 			if(requiredPower <= activePower && i.getElements().equals( elements) ){
 				i.execute(player);
 				activePower -= requiredPower;
-				savePlayerData();
 
 			}
 		}

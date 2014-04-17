@@ -17,6 +17,7 @@ import com.pulsior.onepower.client.renderer.PortalStoneBlockRenderer;
 import com.pulsior.onepower.item.Callandor;
 import com.pulsior.onepower.item.VoraSaAngreal;
 import com.pulsior.onepower.keys.KeyBindings;
+import com.pulsior.onepower.listener.EntityListener;
 import com.pulsior.onepower.packet.PacketPipeline;
 import com.pulsior.onepower.packet.channeling.PacketPlayerEmbraceSaidar;
 import com.pulsior.onepower.proxy.CommonProxy;
@@ -53,9 +54,6 @@ public class TheOnePower
 
 	public static CreativeTabs tab;
 	private final HashMap<EntityPlayer, Channel> channelMap = new HashMap<EntityPlayer, Channel>();
-	//private final HashMap<EntityPlayer, Float> playerActiveLevelMap = new HashMap<EntityPlayer, Float>();
-	//private static Minecraft mc = Minecraft.getMinecraft();
-
 
 	public TheOnePower(){
 
@@ -75,6 +73,7 @@ public class TheOnePower
 	public void init(FMLInitializationEvent event){
 		Crafting.init();    	    	
 		GameRegistry.registerTileEntity(PortalStoneBlockTileEntity.class, "tileEntityPortalStone");
+		MinecraftForge.EVENT_BUS.register(new EntityListener() );
 		FMLCommonHandler.instance().bus().register(new TickHandler() );
 	}
 

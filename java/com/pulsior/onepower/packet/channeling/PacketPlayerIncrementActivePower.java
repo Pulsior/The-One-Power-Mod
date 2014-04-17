@@ -3,8 +3,8 @@ package com.pulsior.onepower.packet.channeling;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 
+import com.pulsior.onepower.data.PlayerData;
 import com.pulsior.onepower.packet.AbstractPacket;
 
 public class PacketPlayerIncrementActivePower extends AbstractPacket{
@@ -20,10 +20,8 @@ public class PacketPlayerIncrementActivePower extends AbstractPacket{
 
 	@Override
 	public void handleServerSide(EntityPlayer player) {
-		NBTTagCompound compound = player.getEntityData();
-		compound.setFloat("playerActivePower", compound.getFloat("playerActivePower") +0.1F );
-
-
+		PlayerData data = PlayerData.getCustomData(player);
+		data.replenishPower(0.1F);
 	}
 
 }
