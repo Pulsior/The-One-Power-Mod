@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
 
 import com.pulsior.onepower.TheOnePower;
 import com.pulsior.onepower.data.PlayerData;
@@ -29,7 +28,9 @@ public class Channel {
 	}
 
 	public void cast(){
-
+		
+		System.out.println(activePower);
+		
 		for(WeaveType w : WeaveType.values() ){
 			IWeave i = w.getIWeave();
 			float requiredPower = i.getRequiredPower();
@@ -37,27 +38,25 @@ public class Channel {
 			if(requiredPower <= activePower && i.getElements().equals( elements) ){
 				i.execute(player);
 				activePower -= requiredPower;
+				save();
 
 			}
 		}
 
 		elements.clear();
 	}
-
-	public void savePlayerData(){
-		NBTTagCompound compound = player.getEntityData();
-		compound.setBoolean("hasChanneledBefore", true);
-		compound.setFloat("playerMaxPower", maxPower);
-		compound.setFloat("playerActivePower", activePower);
-
+	
+	public void save(){
+		data.setMaxPower(maxPower);
+		data.setActivePower(activePower);
 		updateClient();
 	}
 	
-	public void loadData(){
-		NBTTagCompound compound = player.getEntityData();
-		this.activePower = compound.getFloat("playerActivePower");
+	public void update(){
+		this.maxPower = data.getMaxPower();
+		this.activePower = data.getActivePower();
 	}
-
+	
 	public void addElement(Element element){
 		elements.add(element);
 	}
@@ -79,7 +78,6 @@ public class Channel {
 			activePower = maxPower;
 		}
 		
-		savePlayerData();
 	}
 
 	/**

@@ -244,6 +244,7 @@ public class ChannelGUI extends Gui{
 
 	public void setMaxPower(float maxPower){
 		this.maxPower = maxPower;
+		this.full = activePower / maxPower;
 	}
 	
 	/**

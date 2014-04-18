@@ -23,13 +23,10 @@ public class PlayerData implements IExtendedEntityProperties{
 		this.player = player;
 		this.maxPower = 10F;
 		this.activePower = maxPower;
-		player.registerExtendedProperties(PLAYER_DATA_TAG, this);
-		System.out.println("DataConstructor");
 	}
 
 	public static void register(EntityPlayer player){
 		player.registerExtendedProperties(PlayerData.PLAYER_DATA_TAG, new PlayerData(player) );
-		System.out.println("dataregistered");
 	}
 
 	public static PlayerData getCustomData(EntityPlayer player){
@@ -43,7 +40,6 @@ public class PlayerData implements IExtendedEntityProperties{
 		data.setFloat(MAX_POWER, maxPower);
 		data.setFloat(ACTIVE_POWER, activePower);
 		compound.setTag(PLAYER_DATA_TAG, data);
-		System.out.println("data saved ");
 	}
 
 	@Override
@@ -51,7 +47,6 @@ public class PlayerData implements IExtendedEntityProperties{
 		NBTTagCompound properties = (NBTTagCompound) compound.getTag(PLAYER_DATA_TAG);
 		this.maxPower = properties.getInteger(MAX_POWER);
 		this.activePower = properties.getFloat(ACTIVE_POWER);
-		System.out.println("dataloadd");
 	}
 
 	@Override
@@ -63,6 +58,14 @@ public class PlayerData implements IExtendedEntityProperties{
 		return maxPower;
 	}
 	
+	public void setMaxPower(float maxPower){
+		this.maxPower = maxPower;
+	}
+	
+	public void setActivePower(float activePower){
+		this.activePower = activePower;
+	}
+	
 	public float getActivePower(){
 		return activePower;
 	}
@@ -72,7 +75,8 @@ public class PlayerData implements IExtendedEntityProperties{
 	}
 
 	public void replenishPower(float power){
-		if(maxPower <= activePower + power){
+		
+		if(activePower <= maxPower + power){			
 			activePower += power;
 		}
 	}
