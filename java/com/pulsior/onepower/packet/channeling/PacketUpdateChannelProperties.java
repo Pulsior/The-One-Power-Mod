@@ -35,7 +35,6 @@ public class PacketUpdateChannelProperties extends AbstractPacket{
 	public void handleClientSide(EntityPlayer player) {
 		ChannelGUI.instance().setMaxPower(maxPower);
 		ChannelGUI.instance().setActivePower(activePower);
-		System.out.println(activePower);
 	}
 
 	@Override

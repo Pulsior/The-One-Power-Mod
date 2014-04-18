@@ -123,9 +123,5 @@ public class TheOnePower
 	public Channel getChannel(EntityPlayer player){
 		return channelMap.get(player);
 	}
-	
-
-
-
 
 }

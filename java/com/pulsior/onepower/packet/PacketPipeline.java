@@ -22,6 +22,7 @@ import com.pulsior.onepower.packet.channeling.PacketPlayerAddElement;
 import com.pulsior.onepower.packet.channeling.PacketPlayerCastWeave;
 import com.pulsior.onepower.packet.channeling.PacketPlayerEmbraceSaidar;
 import com.pulsior.onepower.packet.channeling.PacketPlayerIncrementActivePower;
+import com.pulsior.onepower.packet.channeling.PacketPlayerRenderParticle;
 import com.pulsior.onepower.packet.channeling.PacketUpdateChannelProperties;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -131,6 +132,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
     	registerPacket(PacketPlayerCastWeave.class);
     	registerPacket(PacketUpdateChannelProperties.class);
     	registerPacket(PacketPlayerIncrementActivePower.class);
+    	registerPacket(PacketPlayerRenderParticle.class);
     }
     
     /** Method to call from FMLPostInitializationEvent

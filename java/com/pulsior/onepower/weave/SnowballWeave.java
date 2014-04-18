@@ -18,6 +18,11 @@ public class SnowballWeave implements IWeave {
 	}
 	
 	@Override
+	public double[] getFocusPointOffset(double x, double y, double z){
+		return new double[]{x+2, y+2, z}; 
+	}
+	
+	@Override
 	public float getRequiredPower() {
 		return 1.5F;
 	}

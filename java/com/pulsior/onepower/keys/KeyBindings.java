@@ -54,6 +54,10 @@ public class KeyBindings {
 		
 		if( gui.isEnabled() ){
 			
+			if( CustomBinding.BINDING_R.getIsKeyPressed() ){
+				return;
+			}
+			
 			if(dwheel > 0){
 				gui.scroll(-1);
 				event.setCanceled(true);

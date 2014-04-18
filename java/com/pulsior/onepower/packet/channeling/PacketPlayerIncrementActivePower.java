@@ -24,7 +24,7 @@ public class PacketPlayerIncrementActivePower extends AbstractPacket{
 	@Override
 	public void handleServerSide(EntityPlayer player) {
 		PlayerData data = PlayerData.getCustomData(player);		
-		data.replenishPower(0.1F);
+		data.replenishPower(0.100000F);
 		
 		float maxPower = data.getMaxPower();
 		float activePower = data.getActivePower();

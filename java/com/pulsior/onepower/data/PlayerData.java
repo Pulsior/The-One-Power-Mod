@@ -76,8 +76,11 @@ public class PlayerData implements IExtendedEntityProperties{
 
 	public void replenishPower(float power){
 		
-		if(activePower <= maxPower + power){			
-			activePower += power;
+		activePower += power;
+		
+		if(activePower > maxPower)
+		{
+			activePower = maxPower;
 		}
 	}
 

@@ -28,9 +28,7 @@ public class Channel {
 	}
 
 	public void cast(){
-		
-		System.out.println(activePower);
-		
+				
 		for(WeaveType w : WeaveType.values() ){
 			IWeave i = w.getIWeave();
 			float requiredPower = i.getRequiredPower();
